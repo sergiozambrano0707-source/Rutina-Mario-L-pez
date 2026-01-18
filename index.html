@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina de Entrenamiento - Mario Lopez</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            border-bottom: 4px solid #22c55e;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #22c55e 0%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+        }
+
+        .weekly-schedule {
+            background: #141414;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .weekly-schedule h2 {
+            color: #22c55e;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .schedule-day {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .schedule-day:hover {
+            transform: translateY(-5px);
+            border-color: #22c55e;
+        }
+
+        .schedule-day.rest {
+            border: 2px dashed #ef4444;
+            background: #1a0a0a;
+        }
+
+        .schedule-day.rest:hover {
+            border-color: #ef4444;
+        }
+
+        .day-label {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #22c55e;
+        }
+
+        .schedule-day.rest .day-label {
+            color: #ef4444;
+        }
+
+        .workout-type {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .workout-section {
+            background: #141414;
+            padding: 50px 40px;
+            margin-bottom: 50px;
+            border-radius: 16px;
+            border-top: 5px solid #ef4444;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .workout-section h2 {
+            color: #ef4444;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .exercise-block {
+            margin-bottom: 50px;
+        }
+
+        .block-header {
+            color: #22c55e;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #222;
+            font-weight: 600;
+        }
+
+        .superset-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .exercise {
+            background: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .exercise:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+        }
+
+        .exercise img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #0a0a0a;
+            display: block;
+        }
+
+        .exercise-content {
+            padding: 25px;
+        }
+
+        .exercise-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .exercise-reps {
+            color: #22c55e;
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+
+        .stretch-note {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #22c55e;
+            margin-top: 30px;
+            color: #bbb;
+        }
+
+        @media (max-width: 1200px) {
+            .schedule-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .exercises-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workout-section {
+                padding: 30px 20px;
+            }
+
+            .workout-section h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>RUTINA DE ENTRENAMIENTO</h1>
+        <p class="subtitle">Mario Lopez - Programa en Casa</p>
+    </header>
+
+    <div class="container">
+        <div class="weekly-schedule">
+            <h2>Programa Semanal</h2>
+            <div class="schedule-grid">
+                <div class="schedule-day">
+                    <div class="day-label">LUNES</div>
+                    <div class="workout-type">Tren Inferior / Hombro</div>
+                </div>
+                <div class="schedule-day">
+                    <div class="day-label">MARTES</div>
+                    <div class="workout-type">Espalda / Pectoral</div>
+                </div>
+                <div class="schedule-day rest">
+                    <div class="day-label">MIÉRCOLES</div>
+                    <div class="workout-type">Descanso</div>
+                </div>
+                <div class="schedule-day">
+                    <div class="day-label">JUEVES</div>
+                    <div class="workout-type">Tren Inferior / Hombro</div>
+                </div>
+                <div class="schedule-day">
+                    <div class="day-label">VIERNES</div>
+                    <div class="workout-type">Espalda / Pectoral</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workout-section">
+            <h2>DÍA 1 - TREN INFERIOR / HOMBRO</h2>
+
+            <div class="exercise-block">
+                <div class="block-header">Movilidad</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image1.jpg" alt="Posición Gato Vaca">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Posición Gato Vaca</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image2.jpg" alt="Puente para Glúteo">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Puente para Glúteo</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image4.jpg" alt="Sentadillas Peso Corporal">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Sentadillas Peso Corporal</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image5.jpg" alt="Push Ups">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Push Ups</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">1ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image6.jpg" alt="Press Militar de Pie">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Press Militar de Pie Estricto con Barra</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image7.jpg" alt="Zancadas Hacia Atrás">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Zancadas Hacia Atrás</div>
+                            <div class="exercise-reps">10 reps por pierna</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">2ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image8.jpg" alt="Peso Muerto con Barra">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Peso Muerto con Barra</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image9.jpg" alt="Elevaciones Laterales">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Elevaciones Laterales</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">3ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image10.jpg" alt="Arnold Press Sentado">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Arnold Press Sentado</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image11.jpg" alt="Sentadilla Copa">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Sentadilla Copa</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">4ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image12.jpg" alt="Elevaciones Deltoides Posterior">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Elevaciones Deltoides Posterior</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image13.jpg" alt="Elevaciones de Rodilla para Abs">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Elevaciones de Rodilla para Abs en Barra</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stretch-note">
+                <strong>Finalizar con:</strong> Estiramiento
+            </div>
+        </div>
+
+        <div class="workout-section">
+            <h2>DÍA 2 - ESPALDA / PECTORAL</h2>
+
+            <div class="exercise-block">
+                <div class="block-header">Movilidad (Repetir 2 veces)</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image5.jpg" alt="Push Ups">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Push Ups</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">1ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image14.jpg" alt="Dominadas Agarre Prono">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Dominadas Agarre Prono</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image15.jpg" alt="Aperturas para Pectoral Acostado">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Aperturas para Pectoral Acostado</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">2ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image16.jpg" alt="Press de Banca">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Press de Banca</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image17.jpg" alt="Remo con Mancuerna">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Remo con Mancuerna</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">3ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image18.jpg" alt="Dominadas Agarre Supino">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Dominadas Agarre Supino</div>
+                            <div class="exercise-reps">10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image5.jpg" alt="Push Ups">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Push Ups</div>
+                            <div class="exercise-reps">15 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">4ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image19.jpg" alt="Plancha Lateral">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Plancha Lateral</div>
+                            <div class="exercise-reps">40s por cada lado</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image20.jpg" alt="Extensión de Tríceps">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Extensión de Tríceps</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image20.jpg" alt="Curl de Bíceps">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Curl de Bíceps</div>
+                            <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stretch-note">
+                <strong>Finalizar con:</strong> Estiramiento
+            </div>
+        </div>
+    </div>
+</body>
+</html>
