@@ -16,6 +16,7 @@
             background: #0a0a0a;
             color: #e5e5e5;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         .container {
@@ -77,6 +78,7 @@
             text-align: center;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            cursor: pointer;
         }
 
         .schedule-day:hover {
@@ -84,13 +86,20 @@
             border-color: #22c55e;
         }
 
+        .schedule-day.active {
+            border-color: #22c55e;
+            background: #22c55e20;
+        }
+
         .schedule-day.rest {
             border: 2px dashed #ef4444;
             background: #1a0a0a;
+            cursor: default;
         }
 
         .schedule-day.rest:hover {
             border-color: #ef4444;
+            transform: none;
         }
 
         .day-label {
@@ -124,6 +133,25 @@
             margin-bottom: 40px;
             text-align: center;
             font-weight: 700;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            background: #22c55e;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .back-to-top:hover {
+            background: #1ea048;
+            transform: translateY(-2px);
         }
 
         .exercise-block {
@@ -178,23 +206,29 @@
             object-fit: cover;
             background: #0a0a0a;
             display: block;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .exercise img:hover {
+            opacity: 0.8;
         }
 
         .exercise-content {
-            padding: 25px;
+            padding: 20px;
         }
 
         .exercise-title {
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .exercise-reps {
             color: #22c55e;
             font-weight: 700;
-            font-size: 1.05em;
+            font-size: 0.95em;
         }
 
         .stretch-note {
@@ -204,6 +238,83 @@
             border-left: 5px solid #22c55e;
             margin-top: 30px;
             color: #bbb;
+        }
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(34, 197, 94, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            background: #22c55e;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .lightbox-info {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
+            border-radius: 8px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .lightbox-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .lightbox-reps {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
         }
 
         @media (max-width: 1200px) {
@@ -222,7 +333,7 @@
             }
             
             .exercises-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
 
             .workout-section {
@@ -231,6 +342,23 @@
 
             .workout-section h2 {
                 font-size: 2em;
+            }
+
+            .lightbox-close {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 30px;
+            }
+
+            .lightbox-info {
+                bottom: 20px;
+                padding: 10px 20px;
+            }
+
+            .lightbox-title {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -242,14 +370,14 @@
     </header>
 
     <div class="container">
-        <div class="weekly-schedule">
+        <div class="weekly-schedule" id="schedule">
             <h2>Programa Semanal</h2>
             <div class="schedule-grid">
-                <div class="schedule-day">
+                <div class="schedule-day" onclick="navigateToWorkout('day1')">
                     <div class="day-label">LUNES</div>
                     <div class="workout-type">Tren Inferior / Hombro</div>
                 </div>
-                <div class="schedule-day">
+                <div class="schedule-day" onclick="navigateToWorkout('day2')">
                     <div class="day-label">MARTES</div>
                     <div class="workout-type">Espalda / Pectoral</div>
                 </div>
@@ -257,53 +385,54 @@
                     <div class="day-label">MIÉRCOLES</div>
                     <div class="workout-type">Descanso</div>
                 </div>
-                <div class="schedule-day">
+                <div class="schedule-day" onclick="navigateToWorkout('day1')">
                     <div class="day-label">JUEVES</div>
                     <div class="workout-type">Tren Inferior / Hombro</div>
                 </div>
-                <div class="schedule-day">
+                <div class="schedule-day" onclick="navigateToWorkout('day2')">
                     <div class="day-label">VIERNES</div>
                     <div class="workout-type">Espalda / Pectoral</div>
                 </div>
             </div>
         </div>
 
-        <div class="workout-section">
+        <div class="workout-section hidden" id="day1">
+            <button class="back-to-top" onclick="showSchedule()">⬆ Volver al Programa</button>
             <h2>DÍA 1 - TREN INFERIOR / HOMBRO</h2>
 
             <div class="exercise-block">
                 <div class="block-header">Movilidad</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image1.jpg" alt="Posición Gato Vaca">
+                        <img src="image1.jpg" alt="Posición Gato Vaca" onclick="openLightbox('image1.jpg', 'Posición Gato Vaca', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Posición Gato Vaca</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image2.jpg" alt="Puente para Glúteo">
+                        <img src="image2.jpg" alt="Puente para Glúteo" onclick="openLightbox('image2.jpg', 'Puente para Glúteo', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Puente para Glúteo</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image4.jpg" alt="Sentadillas Peso Corporal">
+                        <img src="image4.jpg" alt="Sentadillas Peso Corporal" onclick="openLightbox('image4.jpg', 'Sentadillas Peso Corporal', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Sentadillas Peso Corporal</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image5.jpg" alt="Push Ups">
+                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Push Ups</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -316,14 +445,14 @@
                 <div class="superset-label">1ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image6.jpg" alt="Press Militar de Pie">
+                        <img src="image6.jpg" alt="Press Militar de Pie" onclick="openLightbox('image6.jpg', 'Press Militar de Pie Estricto con Barra', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Press Militar de Pie Estricto con Barra</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image7.jpg" alt="Zancadas Hacia Atrás">
+                        <img src="image7.jpg" alt="Zancadas Hacia Atrás" onclick="openLightbox('image7.jpg', 'Zancadas Hacia Atrás', '10 reps por pierna')">
                         <div class="exercise-content">
                             <div class="exercise-title">Zancadas Hacia Atrás</div>
                             <div class="exercise-reps">10 reps por pierna</div>
@@ -336,14 +465,14 @@
                 <div class="superset-label">2ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image8.jpg" alt="Peso Muerto con Barra">
+                        <img src="image8.jpg" alt="Peso Muerto con Barra" onclick="openLightbox('image8.jpg', 'Peso Muerto con Barra', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Peso Muerto con Barra</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image9.jpg" alt="Elevaciones Laterales">
+                        <img src="image9.jpg" alt="Elevaciones Laterales" onclick="openLightbox('image9.jpg', 'Elevaciones Laterales', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Elevaciones Laterales</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -356,14 +485,14 @@
                 <div class="superset-label">3ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image10.jpg" alt="Arnold Press Sentado">
+                        <img src="image10.jpg" alt="Arnold Press Sentado" onclick="openLightbox('image10.jpg', 'Arnold Press Sentado', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Arnold Press Sentado</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image11.jpg" alt="Sentadilla Copa">
+                        <img src="image11.jpg" alt="Sentadilla Copa" onclick="openLightbox('image11.jpg', 'Sentadilla Copa', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Sentadilla Copa</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -376,14 +505,14 @@
                 <div class="superset-label">4ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image12.jpg" alt="Elevaciones Deltoides Posterior">
+                        <img src="image12.jpg" alt="Elevaciones Deltoides Posterior" onclick="openLightbox('image12.jpg', 'Elevaciones Deltoides Posterior', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Elevaciones Deltoides Posterior</div>
                             <div class="exercise-reps">12 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image13.jpg" alt="Elevaciones de Rodilla para Abs">
+                        <img src="image13.jpg" alt="Elevaciones de Rodilla para Abs" onclick="openLightbox('image13.jpg', 'Elevaciones de Rodilla para Abs en Barra', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Elevaciones de Rodilla para Abs en Barra</div>
                             <div class="exercise-reps">10 repeticiones</div>
@@ -397,21 +526,22 @@
             </div>
         </div>
 
-        <div class="workout-section">
+        <div class="workout-section hidden" id="day2">
+            <button class="back-to-top" onclick="showSchedule()">⬆ Volver al Programa</button>
             <h2>DÍA 2 - ESPALDA / PECTORAL</h2>
 
             <div class="exercise-block">
                 <div class="block-header">Movilidad (Repetir 2 veces)</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image5.jpg" alt="Push Ups">
+                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Push Ups</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -424,14 +554,14 @@
                 <div class="superset-label">1ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image14.jpg" alt="Dominadas Agarre Prono">
+                        <img src="image14.jpg" alt="Dominadas Agarre Prono" onclick="openLightbox('image14.jpg', 'Dominadas Agarre Prono', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Dominadas Agarre Prono</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image15.jpg" alt="Aperturas para Pectoral Acostado">
+                        <img src="image15.jpg" alt="Aperturas para Pectoral Acostado" onclick="openLightbox('image15.jpg', 'Aperturas para Pectoral Acostado', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Aperturas para Pectoral Acostado</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -444,14 +574,14 @@
                 <div class="superset-label">2ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image16.jpg" alt="Press de Banca">
+                        <img src="image16.jpg" alt="Press de Banca" onclick="openLightbox('image16.jpg', 'Press de Banca', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Press de Banca</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image17.jpg" alt="Remo con Mancuerna">
+                        <img src="image17.jpg" alt="Remo con Mancuerna" onclick="openLightbox('image17.jpg', 'Remo con Mancuerna', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Remo con Mancuerna</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -464,14 +594,14 @@
                 <div class="superset-label">3ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image18.jpg" alt="Dominadas Agarre Supino">
+                        <img src="image18.jpg" alt="Dominadas Agarre Supino" onclick="openLightbox('image18.jpg', 'Dominadas Agarre Supino', '10 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Dominadas Agarre Supino</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image5.jpg" alt="Push Ups">
+                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '15 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Push Ups</div>
                             <div class="exercise-reps">15 repeticiones</div>
@@ -484,21 +614,21 @@
                 <div class="superset-label">4ª Super Serie x3</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image19.jpg" alt="Plancha Lateral">
+                        <img src="image19.jpg" alt="Plancha Lateral" onclick="openLightbox('image19.jpg', 'Plancha Lateral', '40s por cada lado')">
                         <div class="exercise-content">
                             <div class="exercise-title">Plancha Lateral</div>
                             <div class="exercise-reps">40s por cada lado</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image20.jpg" alt="Extensión de Tríceps">
+                        <img src="image20.jpg" alt="Extensión de Tríceps" onclick="openLightbox('image20.jpg', 'Extensión de Tríceps', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Extensión de Tríceps</div>
                             <div class="exercise-reps">12 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image20.jpg" alt="Curl de Bíceps">
+                        <img src="image20.jpg" alt="Curl de Bíceps" onclick="openLightbox('image20.jpg', 'Curl de Bíceps', '12 repeticiones')">
                         <div class="exercise-content">
                             <div class="exercise-title">Curl de Bíceps</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -512,5 +642,72 @@
             </div>
         </div>
     </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-close">×</div>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="">
+        <div class="lightbox-info">
+            <div class="lightbox-title" id="lightbox-title"></div>
+            <div class="lightbox-reps" id="lightbox-reps"></div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToWorkout(dayId) {
+            // Hide schedule
+            document.getElementById('schedule').classList.add('hidden');
+            
+            // Hide all workout sections
+            document.querySelectorAll('.workout-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected workout
+            document.getElementById(dayId).classList.remove('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSchedule() {
+            // Show schedule
+            document.getElementById('schedule').classList.remove('hidden');
+            
+            // Hide all workout sections
+            document.querySelectorAll('.workout-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Scroll to schedule
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openLightbox(imgSrc, title, reps) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxReps = document.getElementById('lightbox-reps');
+            
+            lightboxImg.src = imgSrc;
+            lightboxTitle.textContent = title;
+            lightboxReps.textContent = reps;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
 </body>
 </html>
