@@ -295,11 +295,13 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 30px;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px 30px;
+            border-radius: 12px;
             color: #fff;
             text-align: center;
+            max-width: 600px;
+            width: 90%;
         }
 
         .lightbox-title {
@@ -311,6 +313,110 @@
         .lightbox-reps {
             color: #22c55e;
             font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .notes-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+
+        .notes-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .notes-input-group {
+            text-align: left;
+        }
+
+        .notes-input-group label {
+            display: block;
+            font-size: 0.85em;
+            color: #22c55e;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .notes-input-group input,
+        .notes-input-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95em;
+            font-family: inherit;
+        }
+
+        .notes-input-group input:focus,
+        .notes-input-group textarea:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+
+        .notes-textarea-group {
+            grid-column: 1 / -1;
+        }
+
+        .notes-textarea-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .save-note-btn {
+            background: #22c55e;
+            color: #000;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95em;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .save-note-btn:hover {
+            background: #1ea048;
+            transform: translateY(-2px);
+        }
+
+        .notes-history {
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .note-item {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #22c55e;
+        }
+
+        .note-header {
+            font-size: 0.85em;
+            color: #22c55e;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .note-text {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .no-notes {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
         }
 
         .hidden {
@@ -404,35 +510,35 @@
                 <div class="block-header">Movilidad</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image1.jpg" alt="Posición Gato Vaca" onclick="openLightbox('image1.jpg', 'Posición Gato Vaca', '10 repeticiones')">
+                        <img src="image1.jpg" alt="Posición Gato Vaca" onclick="openLightbox('image1.jpg', 'Posición Gato Vaca', '10 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Posición Gato Vaca</div>
                             <div class="exercise-reps">10 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image2.jpg" alt="Puente para Glúteo" onclick="openLightbox('image2.jpg', 'Puente para Glúteo', '15 repeticiones')">
+                        <img src="image2.jpg" alt="Puente para Glúteo" onclick="openLightbox('image2.jpg', 'Puente para Glúteo', '15 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Puente para Glúteo</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones')">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image4.jpg" alt="Sentadillas Peso Corporal" onclick="openLightbox('image4.jpg', 'Sentadillas Peso Corporal', '15 repeticiones')">
+                        <img src="image4.jpg" alt="Sentadillas Peso Corporal" onclick="openLightbox('image4.jpg', 'Sentadillas Peso Corporal', '15 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Sentadillas Peso Corporal</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones')">
+                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Push Ups</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -536,14 +642,14 @@
                 <div class="block-header">Movilidad (Repetir 2 veces)</div>
                 <div class="exercises-grid">
                     <div class="exercise">
-                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones')">
+                        <img src="image3.jpg" alt="Deslizamientos de Brazos en Pared" onclick="openLightbox('image3.jpg', 'Deslizamientos de Brazos en Pared', '15 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Deslizamientos de Brazos en Pared</div>
                             <div class="exercise-reps">15 repeticiones</div>
                         </div>
                     </div>
                     <div class="exercise">
-                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones')">
+                        <img src="image5.jpg" alt="Push Ups" onclick="openLightbox('image5.jpg', 'Push Ups', '12 repeticiones', true)">
                         <div class="exercise-content">
                             <div class="exercise-title">Push Ups</div>
                             <div class="exercise-reps">12 repeticiones</div>
@@ -648,16 +754,40 @@
     </div>
 
     <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
         <div class="lightbox-close">×</div>
         <img class="lightbox-content" id="lightbox-img" src="" alt="">
-        <div class="lightbox-info">
+        <div class="lightbox-info" onclick="event.stopPropagation()">
             <div class="lightbox-title" id="lightbox-title"></div>
             <div class="lightbox-reps" id="lightbox-reps"></div>
+            
+            <div class="notes-section">
+                <div class="notes-inputs">
+                    <div class="notes-input-group">
+                        <label>Peso Usado (kg)</label>
+                        <input type="text" id="weight-input" placeholder="Ej: 50">
+                    </div>
+                    <div class="notes-input-group">
+                        <label>Reps Realizadas</label>
+                        <input type="text" id="reps-input" placeholder="Ej: 12">
+                    </div>
+                    <div class="notes-input-group notes-textarea-group">
+                        <label>Notas Adicionales</label>
+                        <textarea id="notes-input" placeholder="Agrega cualquier observación..."></textarea>
+                    </div>
+                </div>
+                <button class="save-note-btn" onclick="saveNote()">💾 Guardar Nota</button>
+                
+                <div class="notes-history" id="notes-history">
+                    <div class="no-notes">No hay notas guardadas aún</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        let currentExerciseId = '';
+
         function navigateToWorkout(dayId) {
             // Hide schedule
             document.getElementById('schedule').classList.add('hidden');
@@ -687,23 +817,139 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openLightbox(imgSrc, title, reps) {
+        async function openLightbox(imgSrc, title, reps, isMovilidad = false) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxTitle = document.getElementById('lightbox-title');
             const lightboxReps = document.getElementById('lightbox-reps');
+            const notesSection = document.querySelector('.notes-section');
+            
+            // Create unique ID for this exercise
+            currentExerciseId = title.replace(/\s+/g, '-').toLowerCase();
             
             lightboxImg.src = imgSrc;
             lightboxTitle.textContent = title;
             lightboxReps.textContent = reps;
+            
+            // Hide or show notes section based on whether it's a movilidad exercise
+            if (isMovilidad) {
+                notesSection.style.display = 'none';
+            } else {
+                notesSection.style.display = 'block';
+                
+                // Clear inputs
+                document.getElementById('weight-input').value = '';
+                document.getElementById('reps-input').value = '';
+                document.getElementById('notes-input').value = '';
+                
+                // Load existing notes
+                await loadNotes();
+            }
+            
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeLightbox() {
+        function closeLightbox(event) {
+            // Only close if clicking on the background, not the info box
+            if (event && event.target.closest('.lightbox-info')) {
+                return;
+            }
+            
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        async function saveNote() {
+            const weight = document.getElementById('weight-input').value.trim();
+            const reps = document.getElementById('reps-input').value.trim();
+            const notes = document.getElementById('notes-input').value.trim();
+            
+            if (!weight && !reps && !notes) {
+                alert('Por favor ingresa al menos un dato');
+                return;
+            }
+            
+            const noteData = {
+                weight,
+                reps,
+                notes,
+                timestamp: new Date().toISOString(),
+                date: new Date().toLocaleDateString('es-ES')
+            };
+            
+            try {
+                // Get existing notes
+                const storageKey = `exercise-notes-${currentExerciseId}`;
+                let existingNotes = [];
+                
+                try {
+                    const result = await window.storage.get(storageKey, true);
+                    if (result && result.value) {
+                        existingNotes = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // Key doesn't exist yet, start with empty array
+                    existingNotes = [];
+                }
+                
+                // Add new note
+                existingNotes.unshift(noteData);
+                
+                // Keep only last 50 notes
+                if (existingNotes.length > 50) {
+                    existingNotes = existingNotes.slice(0, 50);
+                }
+                
+                // Save to storage
+                await window.storage.set(storageKey, JSON.stringify(existingNotes), true);
+                
+                // Clear inputs
+                document.getElementById('weight-input').value = '';
+                document.getElementById('reps-input').value = '';
+                document.getElementById('notes-input').value = '';
+                
+                // Reload notes display
+                await loadNotes();
+                
+            } catch (error) {
+                console.error('Error saving note:', error);
+                alert('Error al guardar la nota. Por favor intenta de nuevo.');
+            }
+        }
+
+        async function loadNotes() {
+            const notesHistory = document.getElementById('notes-history');
+            const storageKey = `exercise-notes-${currentExerciseId}`;
+            
+            try {
+                const result = await window.storage.get(storageKey, true);
+                
+                if (result && result.value) {
+                    const notes = JSON.parse(result.value);
+                    
+                    if (notes.length > 0) {
+                        notesHistory.innerHTML = notes.map(note => `
+                            <div class="note-item">
+                                <div class="note-header">
+                                    ${note.weight ? `Peso: ${note.weight}kg` : ''} 
+                                    ${note.reps ? `| Reps: ${note.reps}` : ''} 
+                                    | ${note.date}
+                                </div>
+                                ${note.notes ? `<div class="note-text">${note.notes}</div>` : ''}
+                            </div>
+                        `).join('');
+                    } else {
+                        notesHistory.innerHTML = '<div class="no-notes">No hay notas guardadas aún</div>';
+                    }
+                } else {
+                    notesHistory.innerHTML = '<div class="no-notes">No hay notas guardadas aún</div>';
+                }
+            } catch (error) {
+                // Key doesn't exist yet
+                notesHistory.innerHTML = '<div class="no-notes">No hay notas guardadas aún</div>';
+            }
         }
 
         // Close lightbox with Escape key
