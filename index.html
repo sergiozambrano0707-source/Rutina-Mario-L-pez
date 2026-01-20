@@ -785,6 +785,34 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBrfWdOqkVNJfS91A6Xl40lL7YRfb-6xsQ",
+            authDomain: "mario-lopez-routine.firebaseapp.com",
+            projectId: "mario-lopez-routine",
+            storageBucket: "mario-lopez-routine.firebasestorage.app",
+            messagingSenderId: "479890703923",
+            appId: "1:479890703923:web:d06a0976f8ba1730d04546"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make functions globally available
+        window.firebaseDb = db;
+        window.firestoreDoc = doc;
+        window.firestoreGetDoc = getDoc;
+        window.firestoreSetDoc = setDoc;
+        window.firestoreUpdateDoc = updateDoc;
+        window.firestoreCollection = collection;
+    </script>
+
     <script>
         let currentExerciseId = '';
 
@@ -880,18 +908,12 @@
             };
             
             try {
-                // Get existing notes
-                const storageKey = `exercise-notes-${currentExerciseId}`;
-                let existingNotes = [];
+                const docRef = window.firestoreDoc(window.firebaseDb, 'exercise-notes', currentExerciseId);
+                const docSnap = await window.firestoreGetDoc(docRef);
                 
-                try {
-                    const result = await window.storage.get(storageKey, true);
-                    if (result && result.value) {
-                        existingNotes = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // Key doesn't exist yet, start with empty array
-                    existingNotes = [];
+                let existingNotes = [];
+                if (docSnap.exists()) {
+                    existingNotes = docSnap.data().notes || [];
                 }
                 
                 // Add new note
@@ -902,8 +924,8 @@
                     existingNotes = existingNotes.slice(0, 50);
                 }
                 
-                // Save to storage
-                await window.storage.set(storageKey, JSON.stringify(existingNotes), true);
+                // Save to Firestore
+                await window.firestoreSetDoc(docRef, { notes: existingNotes });
                 
                 // Clear inputs
                 document.getElementById('weight-input').value = '';
@@ -921,13 +943,13 @@
 
         async function loadNotes() {
             const notesHistory = document.getElementById('notes-history');
-            const storageKey = `exercise-notes-${currentExerciseId}`;
             
             try {
-                const result = await window.storage.get(storageKey, true);
+                const docRef = window.firestoreDoc(window.firebaseDb, 'exercise-notes', currentExerciseId);
+                const docSnap = await window.firestoreGetDoc(docRef);
                 
-                if (result && result.value) {
-                    const notes = JSON.parse(result.value);
+                if (docSnap.exists() && docSnap.data().notes) {
+                    const notes = docSnap.data().notes;
                     
                     if (notes.length > 0) {
                         notesHistory.innerHTML = notes.map(note => `
@@ -947,7 +969,7 @@
                     notesHistory.innerHTML = '<div class="no-notes">No hay notas guardadas aún</div>';
                 }
             } catch (error) {
-                // Key doesn't exist yet
+                console.error('Error loading notes:', error);
                 notesHistory.innerHTML = '<div class="no-notes">No hay notas guardadas aún</div>';
             }
         }
