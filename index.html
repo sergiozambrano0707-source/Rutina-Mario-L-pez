@@ -295,31 +295,58 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.05);
             padding: 25px 30px;
             border-radius: 12px;
             color: #fff;
             text-align: center;
             max-width: 600px;
             width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
         }
 
         .lightbox-title {
             font-size: 1.3em;
             font-weight: 700;
             margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .lightbox-reps {
-            color: #22c55e;
+            color: #000;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .toggle-notes-btn {
+            background: #22c55e;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .toggle-notes-btn:hover {
+            background: #1ea048;
+            transform: translateY(-2px);
         }
 
         .notes-section {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #333;
+            border-top: 2px solid rgba(51, 51, 51, 0.5);
+            display: none;
+        }
+
+        .notes-section.active {
+            display: block;
         }
 
         .notes-inputs {
@@ -336,21 +363,23 @@
         .notes-input-group label {
             display: block;
             font-size: 0.85em;
-            color: #22c55e;
+            color: #000;
             margin-bottom: 5px;
             font-weight: 600;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .notes-input-group input,
         .notes-input-group textarea {
             width: 100%;
             padding: 8px 12px;
-            background: #1a1a1a;
-            border: 2px solid #333;
+            background: rgba(26, 26, 26, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             color: #fff;
             font-size: 0.95em;
             font-family: inherit;
+            backdrop-filter: blur(2px);
         }
 
         .notes-input-group input:focus,
@@ -394,23 +423,26 @@
         }
 
         .note-item {
-            background: #1a1a1a;
+            background: rgba(26, 26, 26, 0.05);
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 8px;
             border-left: 3px solid #22c55e;
+            backdrop-filter: blur(2px);
         }
 
         .note-header {
             font-size: 0.85em;
-            color: #22c55e;
+            color: #000;
             font-weight: 600;
             margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .note-text {
             font-size: 0.9em;
-            color: #ccc;
+            color: #000;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .no-notes {
@@ -761,7 +793,9 @@
             <div class="lightbox-title" id="lightbox-title"></div>
             <div class="lightbox-reps" id="lightbox-reps"></div>
             
-            <div class="notes-section">
+            <button class="toggle-notes-btn" id="toggle-notes-btn" onclick="toggleNotes()">📝 Mostrar Notas</button>
+            
+            <div class="notes-section" id="notes-section">
                 <div class="notes-inputs">
                     <div class="notes-input-group">
                         <label>Peso Usado (kg)</label>
@@ -850,7 +884,8 @@
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxTitle = document.getElementById('lightbox-title');
             const lightboxReps = document.getElementById('lightbox-reps');
-            const notesSection = document.querySelector('.notes-section');
+            const notesSection = document.getElementById('notes-section');
+            const toggleBtn = document.getElementById('toggle-notes-btn');
             
             // Create unique ID for this exercise
             currentExerciseId = title.replace(/\s+/g, '-').toLowerCase();
@@ -859,11 +894,16 @@
             lightboxTitle.textContent = title;
             lightboxReps.textContent = reps;
             
-            // Hide or show notes section based on whether it's a movilidad exercise
+            // Reset notes section to hidden
+            notesSection.classList.remove('active');
+            toggleBtn.textContent = '📝 Mostrar Notas';
+            
+            // Hide or show toggle button based on whether it's a movilidad exercise
             if (isMovilidad) {
+                toggleBtn.style.display = 'none';
                 notesSection.style.display = 'none';
             } else {
-                notesSection.style.display = 'block';
+                toggleBtn.style.display = 'inline-block';
                 
                 // Clear inputs
                 document.getElementById('weight-input').value = '';
@@ -876,6 +916,19 @@
             
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+
+        function toggleNotes() {
+            const notesSection = document.getElementById('notes-section');
+            const toggleBtn = document.getElementById('toggle-notes-btn');
+            
+            if (notesSection.classList.contains('active')) {
+                notesSection.classList.remove('active');
+                toggleBtn.textContent = '📝 Mostrar Notas';
+            } else {
+                notesSection.classList.add('active');
+                toggleBtn.textContent = '❌ Ocultar Notas';
+            }
         }
 
         function closeLightbox(event) {
