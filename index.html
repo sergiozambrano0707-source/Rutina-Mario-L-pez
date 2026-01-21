@@ -845,10 +845,27 @@
         window.firestoreSetDoc = setDoc;
         window.firestoreUpdateDoc = updateDoc;
         window.firestoreCollection = collection;
+        
+        // Signal that Firebase is ready
+        window.firebaseReady = true;
+        
+        // Dispatch event to notify Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
     </script>
 
     <script>
         let currentExerciseId = '';
+
+        // Wait for Firebase to be ready
+        function waitForFirebase() {
+            return new Promise((resolve) => {
+                if (window.firebaseReady) {
+                    resolve();
+                } else {
+                    window.addEventListener('firebaseReady', resolve, { once: true });
+                }
+            });
+        }
 
         function navigateToWorkout(dayId) {
             // Hide schedule
@@ -880,6 +897,9 @@
         }
 
         async function openLightbox(imgSrc, title, reps, isMovilidad = false) {
+            // Wait for Firebase to be ready
+            await waitForFirebase();
+            
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxTitle = document.getElementById('lightbox-title');
@@ -943,6 +963,9 @@
         }
 
         async function saveNote() {
+            // Wait for Firebase to be ready
+            await waitForFirebase();
+            
             const weight = document.getElementById('weight-input').value.trim();
             const reps = document.getElementById('reps-input').value.trim();
             const notes = document.getElementById('notes-input').value.trim();
@@ -995,6 +1018,9 @@
         }
 
         async function loadNotes() {
+            // Wait for Firebase to be ready
+            await waitForFirebase();
+            
             const notesHistory = document.getElementById('notes-history');
             
             try {
