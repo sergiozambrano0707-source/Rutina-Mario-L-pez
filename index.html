@@ -67,7 +67,7 @@
 
         .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 20px;
         }
 
@@ -531,6 +531,10 @@
                     <div class="day-label">VIERNES</div>
                     <div class="workout-type">Espalda / Pectoral</div>
                 </div>
+                <div class="schedule-day" onclick="navigateToWorkout('day5')" style="border: 2px solid #fbbf24;">
+                    <div class="day-label" style="color: #fbbf24;">OPCIONAL</div>
+                    <div class="workout-type">Día 5</div>
+                </div>
             </div>
         </div>
 
@@ -772,6 +776,81 @@
                         <div class="exercise-content">
                             <div class="exercise-title">Curl de Bíceps</div>
                             <div class="exercise-reps">12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stretch-note">
+                <strong>Finalizar con:</strong> Estiramiento
+            </div>
+            
+            <button class="back-to-top" onclick="showSchedule()" style="margin-top: 30px;">⬆ Volver al Programa</button>
+        </div>
+
+        <div class="workout-section hidden" id="day5">
+            <button class="back-to-top" onclick="showSchedule()">⬆ Volver al Programa</button>
+            <h2>DÍA 5 - OPCIONAL</h2>
+
+            <div class="exercise-block">
+                <div class="block-header">Comenzar con Movilidad</div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">1ª Super Serie x3</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image22.jpg" alt="Remo con Barra" onclick="openLightbox('image22.jpg', 'Remo con Barra', '8-10 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Remo con Barra</div>
+                            <div class="exercise-reps">8-10 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image23.jpg" alt="Press con Mancuerna" onclick="openLightbox('image23.jpg', 'Press con Mancuerna', '10-12 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Press con Mancuerna</div>
+                            <div class="exercise-reps">10-12 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">2ª Super Serie x4</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image24.jpg" alt="Curls de Bíceps Martillo" onclick="openLightbox('image24.jpg', 'Curls de Bíceps Martillo', '10-12 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Curls de Bíceps Martillo</div>
+                            <div class="exercise-reps">10-12 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image25.jpg" alt="Elevación para Pantorrilla" onclick="openLightbox('image25.jpg', 'Elevación para Pantorrilla', '10-15 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Elevación para Pantorrilla</div>
+                            <div class="exercise-reps">10-15 repeticiones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-block">
+                <div class="superset-label">3ª Super Serie x4</div>
+                <div class="exercises-grid">
+                    <div class="exercise">
+                        <img src="image26.jpg" alt="Kick Backs para Tríceps" onclick="openLightbox('image26.jpg', 'Kick Backs para Tríceps', '10-12 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Kick Backs para Tríceps</div>
+                            <div class="exercise-reps">10-12 repeticiones</div>
+                        </div>
+                    </div>
+                    <div class="exercise">
+                        <img src="image27.jpg" alt="Vuelos Deltoides Posterior" onclick="openLightbox('image27.jpg', 'Vuelos Deltoides Posterior', '10-12 repeticiones')">
+                        <div class="exercise-content">
+                            <div class="exercise-title">Vuelos Deltoides Posterior</div>
+                            <div class="exercise-reps">10-12 repeticiones</div>
                         </div>
                     </div>
                 </div>
